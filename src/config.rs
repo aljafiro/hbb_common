@@ -1242,13 +1242,19 @@ impl Config {
     }
 
     pub fn get_option(k: &str) -> String {
-        get_or(
-            &OVERWRITE_SETTINGS,
-            &CONFIG2.read().unwrap().options,
-            &DEFAULT_SETTINGS,
-            k,
-        )
-        .unwrap_or_default()
+        match k {
+            "custom-rendezvous-server" => RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string(),
+            "relay-server" => RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string(),
+            "api-server" => format!("http://{}:21114", RENDEZVOUS_SERVERS.first().unwrap_or(&"")),
+            "key" => RS_PUB_KEY.to_string(),
+            _ => get_or(
+                &OVERWRITE_SETTINGS,
+                &CONFIG2.read().unwrap().options,
+                &DEFAULT_SETTINGS,
+                k,
+            )
+            .unwrap_or_default(),
+        }
     }
 
     pub fn get_bool_option(k: &str) -> bool {
@@ -2772,11 +2778,18 @@ fn is_option_can_save(
 
 #[inline]
 pub fn is_incoming_only() -> bool {
-    HARD_SETTINGS
-        .read()
-        .unwrap()
-        .get("conn-type")
-        .map_or(false, |x| x == ("incoming"))
+    #[cfg(feature = "incoming_only")]
+    {
+        true
+    }
+    #[cfg(not(feature = "incoming_only"))]
+    {
+        HARD_SETTINGS
+            .read()
+            .unwrap()
+            .get("conn-type")
+            .map_or(false, |x| x == ("incoming"))
+    }
 }
 
 #[inline]

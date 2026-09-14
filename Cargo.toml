@@ -9,6 +9,7 @@ edition = "2018"
 [features]
 default = []
 webrtc = ["dep:webrtc"]
+incoming_only = []
 
 [dependencies]
 # new flexi_logger failed on rustc 1.75

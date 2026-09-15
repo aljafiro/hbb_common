@@ -1273,7 +1273,7 @@ impl Config {
                 if !v.is_empty() {
                     v
                 } else {
-                    format!("https://{}", RENDEZVOUS_SERVERS.first().unwrap_or(&""))
+                    "https://soporteremoto-diputacion-cau-pre.dacoruna.gal".to_string()
                 }
             }
             "key" => {

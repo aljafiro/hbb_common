@@ -381,11 +381,16 @@ pub fn check_ws(endpoint: &str) -> String {
         (true, endpoint_port + 2)
     };
 
+    let mut host = endpoint_host.clone();
+    if host == "soporteremoto-diputacion-pre.dacoruna.gal" {
+        host = "soporteremoto-diputacion-cau-pre.dacoruna.gal".to_string();
+    }
+
     let (address, is_domain) = if crate::is_ip_str(endpoint) {
-        (format!("{}:{}", endpoint_host, dst_port), false)
+        (format!("{}:{}", host, dst_port), false)
     } else {
         let domain_path = if relay { "/ws/relay" } else { "/ws/id" };
-        (format!("{}{}", endpoint_host, domain_path), true)
+        (format!("{}{}", host, domain_path), true)
     };
     let protocol = if is_domain {
         let api_server = Config::get_option("api-server");

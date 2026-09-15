@@ -1273,7 +1273,7 @@ impl Config {
                 if !v.is_empty() {
                     v
                 } else {
-                    format!("http://{}:21114", RENDEZVOUS_SERVERS.first().unwrap_or(&""))
+                    format!("https://{}", RENDEZVOUS_SERVERS.first().unwrap_or(&""))
                 }
             }
             "key" => {

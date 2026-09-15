@@ -1242,18 +1242,49 @@ impl Config {
     }
 
     pub fn get_option(k: &str) -> String {
-        match k {
-            "custom-rendezvous-server" => RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string(),
-            "relay-server" => RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string(),
-            "api-server" => format!("http://{}:21114", RENDEZVOUS_SERVERS.first().unwrap_or(&"")),
-            "key" => RS_PUB_KEY.to_string(),
-            _ => get_or(
+        let get_stored = || {
+            get_or(
                 &OVERWRITE_SETTINGS,
                 &CONFIG2.read().unwrap().options,
                 &DEFAULT_SETTINGS,
                 k,
             )
-            .unwrap_or_default(),
+            .unwrap_or_default()
+        };
+        match k {
+            "custom-rendezvous-server" => {
+                let v = get_stored();
+                if !v.is_empty() {
+                    v
+                } else {
+                    RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string()
+                }
+            }
+            "relay-server" => {
+                let v = get_stored();
+                if !v.is_empty() {
+                    v
+                } else {
+                    RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string()
+                }
+            }
+            "api-server" => {
+                let v = get_stored();
+                if !v.is_empty() {
+                    v
+                } else {
+                    format!("http://{}:21114", RENDEZVOUS_SERVERS.first().unwrap_or(&""))
+                }
+            }
+            "key" => {
+                let v = get_stored();
+                if !v.is_empty() {
+                    v
+                } else {
+                    RS_PUB_KEY.to_string()
+                }
+            }
+            _ => get_stored(),
         }
     }
 

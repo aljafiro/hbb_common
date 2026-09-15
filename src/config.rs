@@ -2885,12 +2885,7 @@ pub fn option2bool(option: &str, value: &str) -> bool {
 
 pub fn use_ws() -> bool {
     let option = keys::OPTION_ALLOW_WEBSOCKET;
-    let val = Config::get_option(option);
-    if val.is_empty() {
-        true
-    } else {
-        option2bool(option, &val)
-    }
+    option2bool(option, &Config::get_option(option))
 }
 
 pub fn allow_insecure_tls_fallback() -> bool {

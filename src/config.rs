@@ -1253,36 +1253,16 @@ impl Config {
         };
         match k {
             "custom-rendezvous-server" => {
-                let v = get_stored();
-                if !v.is_empty() {
-                    v
-                } else {
-                    RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string()
-                }
+                RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string()
             }
             "relay-server" => {
-                let v = get_stored();
-                if !v.is_empty() {
-                    v
-                } else {
-                    RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string()
-                }
+                RENDEZVOUS_SERVERS.first().unwrap_or(&"").to_string()
             }
             "api-server" => {
-                let v = get_stored();
-                if !v.is_empty() {
-                    v
-                } else {
-                    "https://soporteremoto-diputacion-cau-pre.dacoruna.gal".to_string()
-                }
+                "https://soporteremoto-diputacion-cau-pre.dacoruna.gal".to_string()
             }
             "key" => {
-                let v = get_stored();
-                if !v.is_empty() {
-                    v
-                } else {
-                    RS_PUB_KEY.to_string()
-                }
+                RS_PUB_KEY.to_string()
             }
             _ => get_stored(),
         }
